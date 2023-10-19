@@ -3,8 +3,8 @@ package exam;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -38,23 +38,24 @@ public class TestServlet extends HttpServlet {
 			response.sendRedirect("/servlet-test/TestServlet?cmd=list");
 						
 		} else if(cmd.equals("list")) {
-			for(Article a : articles) {
-				out.println(String.format("번호 : %d <br>", a.getId()));
-				out.println(String.format("제목 : %s <br>", a.getTitle()));
-				out.println(String.format("내용 : %s <br>", a.getContent()));
-			}
+//			for(Article a : articles) {
+//				out.println(String.format("번호 : %d <br>", a.getId()));
+//				out.println(String.format("제목 : %s <br>", a.getTitle()));
+//				out.println(String.format("내용 : %s <br>", a.getContent()));
+//				out.println("<a href='test.html'>등록 화면으로</a>");
+//				
+//			}
+			
+			RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/list.jsp");
+			request.setAttribute("articles", articles);
+			dispatcher.forward(request, response);
+			
 		} else if(cmd.equals("test")) {
 			String num2 = request.getParameter("num2");
 			System.out.println(num2);
+		} else if(cmd.equals("gugu")) {
+			RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/gugudan.jsp");
+			dispatcher.forward(request, response);
 		}
 	}
-//	public void printArticles(List<Article> articles, HttpServletResponse res) throws IOException {
-//		
-//		PrintWriter out = res.getWriter();
-//		for(Article a : articles) {
-//			out.println(String.format("번호 : %d <br>", a.getId()));
-//			out.println(String.format("제목 : %s <br>", a.getTitle()));
-//			out.println(String.format("내용 : %s <br>", a.getContent()));
-//		}
-//	}
 }
