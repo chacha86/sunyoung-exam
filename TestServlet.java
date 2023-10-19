@@ -3,6 +3,7 @@ package exam;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,7 +18,6 @@ public class TestServlet extends HttpServlet {
 	int lastArticleId = 1;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
 		response.setContentType("text/html; charset=utf-8");
@@ -30,14 +30,31 @@ public class TestServlet extends HttpServlet {
 			Article article = new Article(lastArticleId, title, content);
 			articles.add(article);
 			out.println("게시물 등록이 완료되었습니다.");
+//			printArticles(articles, response);// v1. 직접 함수 호출
+			
+			//v2. list url을 다시 호출
+			
+			// 주소값을 바꾸기 -> 리다이렉트 
+			response.sendRedirect("/servlet-test/TestServlet?cmd=list");
+						
 		} else if(cmd.equals("list")) {
 			for(Article a : articles) {
 				out.println(String.format("번호 : %d <br>", a.getId()));
 				out.println(String.format("제목 : %s <br>", a.getTitle()));
 				out.println(String.format("내용 : %s <br>", a.getContent()));
 			}
+		} else if(cmd.equals("test")) {
+			String num2 = request.getParameter("num2");
+			System.out.println(num2);
 		}
-		
 	}
-
+//	public void printArticles(List<Article> articles, HttpServletResponse res) throws IOException {
+//		
+//		PrintWriter out = res.getWriter();
+//		for(Article a : articles) {
+//			out.println(String.format("번호 : %d <br>", a.getId()));
+//			out.println(String.format("제목 : %s <br>", a.getTitle()));
+//			out.println(String.format("내용 : %s <br>", a.getContent()));
+//		}
+//	}
 }
